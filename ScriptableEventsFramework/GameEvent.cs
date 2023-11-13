@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ScriptableEventsFramework
+namespace Morganheim.ScriptableEvents
 {
     [CreateAssetMenu(fileName = "GameEvent", menuName = "Scriptable Events/Game Event")]
     public class GameEvent : ScriptableObject
@@ -9,6 +9,7 @@ namespace ScriptableEventsFramework
         /**************************************** INSPECTOR VARIABLES ****************************************/
         [SerializeField] private List<GameEventEmitter> _emitters = new List<GameEventEmitter>();
         [SerializeField] private List<GameEventListener> _listeners = new List<GameEventListener>();
+
 
         /**************************************** PUBLIC METHODS ****************************************/
         public void SubscribeEmitter(GameEventEmitter emitter)
@@ -18,6 +19,7 @@ namespace ScriptableEventsFramework
 
             _emitters.Add(emitter);
         }
+
         public void UnsubscribeEmitter(GameEventEmitter emitter)
         {
             if (!_emitters.Contains(emitter))
@@ -33,6 +35,7 @@ namespace ScriptableEventsFramework
 
             _listeners.Add(listener);
         }
+
         public void UnsubscribeListener(GameEventListener listener)
         {
             if (!_listeners.Contains(listener))
@@ -47,9 +50,7 @@ namespace ScriptableEventsFramework
                 return;
 
             for (int i = _listeners.Count - 1; i >= 0; i--)
-            {
                 _listeners[i].OnEventEmitted(this, emitter, message);
-            }
         }
     }
 }
