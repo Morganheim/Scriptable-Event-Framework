@@ -3,13 +3,12 @@ using UnityEngine;
 
 namespace Morganheim.ScriptableEvents
 {
-    [CreateAssetMenu(fileName = "GameEvent", menuName = "Scriptable Events/Game Event")]
+    [CreateAssetMenu(fileName = "GameEvent", menuName = "MorganheimFramework/Scriptable Events/Game Event")]
     public class GameEvent : ScriptableObject
     {
         /**************************************** INSPECTOR VARIABLES ****************************************/
         [SerializeField] private List<GameEventEmitter> _emitters = new List<GameEventEmitter>();
         [SerializeField] private List<GameEventListener> _listeners = new List<GameEventListener>();
-
 
         /**************************************** PUBLIC METHODS ****************************************/
         public void SubscribeEmitter(GameEventEmitter emitter)

@@ -5,18 +5,16 @@ namespace Morganheim.ScriptableEvents
     [System.Serializable]
     public class BoolMessage : GameEventMessage
     {
-        [SerializeField] private bool _boolValue;
-
-        public bool BoolValue { get => _boolValue; }
+        [field: SerializeField] public bool BoolValue { get; private set; }
 
         public BoolMessage(bool boolValue)
         {
-            _boolValue = boolValue;
+            BoolValue = boolValue;
         }
 
         public BoolMessage(string eventName, bool boolValue) : base(eventName)
         {
-            _boolValue = boolValue;
+            BoolValue = boolValue;
         }
     }
 }

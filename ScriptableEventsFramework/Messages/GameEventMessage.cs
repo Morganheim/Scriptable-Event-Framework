@@ -5,9 +5,7 @@ namespace Morganheim.ScriptableEvents
     [System.Serializable]
     public class GameEventMessage
     {
-        [SerializeField] private string _eventName;
-
-        public string EventName { get => _eventName; }
+        [field: SerializeField] public string EventName { get; private set; }
 
         public GameEventMessage()
         {
@@ -16,7 +14,7 @@ namespace Morganheim.ScriptableEvents
 
         public GameEventMessage(string eventName)
         {
-            _eventName = eventName;
+            EventName = eventName;
         }
     }
 }

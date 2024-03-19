@@ -8,7 +8,6 @@ namespace Morganheim.ScriptableEvents
         /**************************************** INSPECTOR VARIABLES ****************************************/
         [SerializeField] private List<EventEmitterResponse> _emitterResponses;
 
-
         /**************************************** UNITY CALLBACKS ****************************************/
         private void OnEnable()
         {
@@ -21,7 +20,6 @@ namespace Morganheim.ScriptableEvents
             for (int i = 0; i < _emitterResponses.Count; i++)
                 _emitterResponses[i].UnsubscribeEmitter(this);
         }
-
 
         /**************************************** PUBLIC METHODS ****************************************/
         public void EmitAll(GameEventMessage message = null)
@@ -59,13 +57,8 @@ namespace Morganheim.ScriptableEvents
     public struct EventEmitterResponse
     {
         /**************************************** INSPECTOR VARIABLES ****************************************/
-        [SerializeField] private string _responseName;
+        [field: SerializeField] public string ResponseName { get; private set; }
         [SerializeField] private List<GameEvent> _scriptableEvents;
-
-
-        /**************************************** PROPERTIES ****************************************/
-        public string ResponseName { get => _responseName; }
-
 
         /**************************************** PUBLIC METHODS ****************************************/
         public void SubscribeEmitter(GameEventEmitter emitter)

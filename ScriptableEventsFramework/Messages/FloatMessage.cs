@@ -5,18 +5,16 @@ namespace Morganheim.ScriptableEvents
     [System.Serializable]
     public class FloatMessage : GameEventMessage
     {
-        [SerializeField] private float _floatValue;
-
-        public float FloatValue { get => _floatValue; }
+        [field: SerializeField] public float FloatValue { get; private set; }
 
         public FloatMessage(float floatValue)
         {
-            _floatValue = floatValue;
+            FloatValue = floatValue;
         }
 
         public FloatMessage(string eventName, float floatValue) : base(eventName)
         {
-            _floatValue = floatValue;
+            FloatValue = floatValue;
         }
     }
 }
