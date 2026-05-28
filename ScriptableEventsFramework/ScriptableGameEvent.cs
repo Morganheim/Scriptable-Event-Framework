@@ -6,8 +6,8 @@ namespace Morganheim.ScriptableEvents
     [CreateAssetMenu(fileName = "GameEvent", menuName = "Scriptable Events/Game Event")]
     public class ScriptableGameEvent : ScriptableObject
     {
-        [SerializeField] private List<GameEventEmitter> _emitters = new List<GameEventEmitter>();
-        [SerializeField] private List<GameEventListener> _listeners = new List<GameEventListener>();
+        private readonly HashSet<GameEventEmitter> _emitters = new();
+        private readonly HashSet<GameEventListener> _listeners = new();
 
         public void SubscribeEmitter(GameEventEmitter emitter)
         {
@@ -46,8 +46,8 @@ namespace Morganheim.ScriptableEvents
             if (emitter == null)
                 return;
 
-            for (int i = _listeners.Count - 1; i >= 0; i--)
-                _listeners[i].OnEventEmitted(this, emitter, message);
+            foreach (var listener in _listeners)
+                listener.OnEventEmitted(this, emitter, message);
         }
     }
 }
