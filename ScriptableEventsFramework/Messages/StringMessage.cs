@@ -3,16 +3,11 @@ using UnityEngine;
 namespace Morganheim.ScriptableEvents
 {
     [System.Serializable]
-    public class StringMessage : GameEventMessage
+    public class StringMessage : IGameEventMessage
     {
         [field: SerializeField] public string StringValue { get; private set; }
 
         public StringMessage(string stringValue)
-        {
-            StringValue = stringValue;
-        }
-
-        public StringMessage(string eventName, string stringValue) : base(eventName)
         {
             StringValue = stringValue;
         }

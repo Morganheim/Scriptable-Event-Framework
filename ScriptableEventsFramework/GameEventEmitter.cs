@@ -5,77 +5,64 @@ namespace Morganheim.ScriptableEvents
 {
     public class GameEventEmitter : MonoBehaviour
     {
-        /**************************************** INSPECTOR VARIABLES ****************************************/
-        [SerializeField] private List<EventEmitterResponse> _emitterResponses;
+        [SerializeField] private EventEmitterResponse[] _emitterResponses;
 
-        /**************************************** UNITY CALLBACKS ****************************************/
+        private readonly Dictionary<StringId, EventEmitterResponse> _responses = new();
+
         private void OnEnable()
         {
-            for (int i = 0; i < _emitterResponses.Count; i++)
+            _responses.Clear();
+
+            for (int i = 0; i < _emitterResponses.Length; i++)
+            {
+                _responses.TryAdd(_emitterResponses[i].ResponseName, _emitterResponses[i]);
                 _emitterResponses[i].SubscribeEmitter(this);
+            }
         }
 
         private void OnDisable()
         {
-            for (int i = 0; i < _emitterResponses.Count; i++)
+            for (int i = 0; i < _emitterResponses.Length; i++)
                 _emitterResponses[i].UnsubscribeEmitter(this);
+
+            _responses.Clear();
         }
 
-        /**************************************** PUBLIC METHODS ****************************************/
-        public void EmitAll(GameEventMessage message = null)
+        public void EmitAll(IGameEventMessage message = null)
         {
-            for (int i = 0; i < _emitterResponses.Count; i++)
+            for (int i = 0; i < _emitterResponses.Length; i++)
                 _emitterResponses[i].Emit(this, message);
         }
 
-        public void Emit(GameEventMessage message)
+        public void Emit(string eventName, IGameEventMessage message = null)
         {
-            for (int i = 0; i < _emitterResponses.Count; i++)
-            {
-                if (_emitterResponses[i].ResponseName != message.EventName)
-                    continue;
-
-                _emitterResponses[i].Emit(this, message);
-            }
-        }
-
-        public void Emit(string name, GameEventMessage message = null)
-        {
-            for (int i = 0; i < _emitterResponses.Count; i++)
-            {
-                if (_emitterResponses[i].ResponseName != name)
-                    continue;
-
-                _emitterResponses[i].Emit(this, message);
-            }
+            if (_responses.TryGetValue(eventName, out var response))
+                response.Emit(this, message);
         }
     }
-
 
 
     [System.Serializable]
     public struct EventEmitterResponse
     {
-        /**************************************** INSPECTOR VARIABLES ****************************************/
         [field: SerializeField] public string ResponseName { get; private set; }
-        [SerializeField] private List<GameEvent> _scriptableEvents;
+        [SerializeField] private ScriptableGameEvent[] _scriptableEvents;
 
-        /**************************************** PUBLIC METHODS ****************************************/
-        public void SubscribeEmitter(GameEventEmitter emitter)
+        public readonly void SubscribeEmitter(GameEventEmitter emitter)
         {
-            for (int i = 0; i < _scriptableEvents.Count; i++)
+            for (int i = 0; i < _scriptableEvents.Length; i++)
                 _scriptableEvents[i].SubscribeEmitter(emitter);
         }
 
-        public void UnsubscribeEmitter(GameEventEmitter emitter)
+        public readonly void UnsubscribeEmitter(GameEventEmitter emitter)
         {
-            for (int i = 0; i < _scriptableEvents.Count; i++)
+            for (int i = 0; i < _scriptableEvents.Length; i++)
                 _scriptableEvents[i].UnsubscribeEmitter(emitter);
         }
 
-        public void Emit(GameEventEmitter emitter, GameEventMessage message)
+        public readonly void Emit(GameEventEmitter emitter, IGameEventMessage message)
         {
-            for (int i = 0; i < _scriptableEvents.Count; i++)
+            for (int i = 0; i < _scriptableEvents.Length; i++)
                 _scriptableEvents[i].Emit(emitter, message);
         }
     }

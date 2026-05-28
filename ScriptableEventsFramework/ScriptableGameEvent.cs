@@ -3,14 +3,12 @@ using UnityEngine;
 
 namespace Morganheim.ScriptableEvents
 {
-    [CreateAssetMenu(fileName = "GameEvent", menuName = "MorganheimFramework/Scriptable Events/Game Event")]
-    public class GameEvent : ScriptableObject
+    [CreateAssetMenu(fileName = "GameEvent", menuName = "Scriptable Events/Game Event")]
+    public class ScriptableGameEvent : ScriptableObject
     {
-        /**************************************** INSPECTOR VARIABLES ****************************************/
         [SerializeField] private List<GameEventEmitter> _emitters = new List<GameEventEmitter>();
         [SerializeField] private List<GameEventListener> _listeners = new List<GameEventListener>();
 
-        /**************************************** PUBLIC METHODS ****************************************/
         public void SubscribeEmitter(GameEventEmitter emitter)
         {
             if (emitter == null || _emitters.Contains(emitter))
@@ -43,7 +41,7 @@ namespace Morganheim.ScriptableEvents
             _listeners.Remove(listener);
         }
 
-        public void Emit(GameEventEmitter emitter, GameEventMessage message = null)
+        public void Emit(GameEventEmitter emitter, IGameEventMessage message = null)
         {
             if (emitter == null)
                 return;
