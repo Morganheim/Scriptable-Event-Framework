@@ -36,8 +36,13 @@ namespace Morganheim.ScriptableEvents
 
         public void Emit(string eventName, IGameEventMessage message = null)
         {
-            if (_responses.TryGetValue(eventName, out var response))
-                response.Emit(this, message);
+            if (!_responses.TryGetValue(eventName, out var response))
+            {
+                Debug.LogWarning($"Event \"{eventName}\" does not exist on this ({gameObject.name}) emitter.");
+                return;
+            }
+
+            response.Emit(this, message);
         }
     }
 
